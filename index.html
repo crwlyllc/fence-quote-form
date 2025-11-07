@@ -18,7 +18,10 @@
   <!-- End Google Tag Manager -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
   <style>
     :root {
       --brand: #004b3d;
@@ -66,19 +69,54 @@
     .brand-mark {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      letter-spacing: 0.02em;
+      gap: 0.9rem;
       color: var(--brand);
     }
 
     .brand-mark img {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 6px 14px rgba(0, 75, 61, 0.2);
+      height: 56px;
+      width: auto;
+      box-shadow: 0 6px 14px rgba(0, 75, 61, 0.16);
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 0.35rem 0.45rem;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      text-align: left;
+    }
+
+    .brand-text span:last-child {
+      margin-top: 0.05rem;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.25rem;
+      text-align: right;
+    }
+
+    .header-phone {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--brand);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+
+    .header-phone:hover,
+    .header-phone:focus {
+      text-decoration: underline;
     }
 
     .header-tagline {
@@ -331,6 +369,15 @@
         align-items: flex-start;
       }
 
+      .header-meta {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .header-phone {
+        align-self: flex-start;
+      }
+
       .main-content {
         padding: 2.5rem 1rem 3rem;
       }
@@ -356,12 +403,18 @@
     <div class="header-content">
       <div class="brand-mark">
         <img
-          src="https://cdn.prod.website-files.com/6594928d27a68dfdb6474334/66e8a1e05c9e00dea43e9a1b_Strong-Perimeter-Logo-32.jpg"
-          alt="Strong Perimeter"
+          src="https://cdn.prod.website-files.com/6594928d27a68dfdb6474334/66037f4afa1645b7b1e725b8_Strong%20Perimeter%20Logo.svg"
+          alt="Strong Perimeter logo"
         />
-        Strong Perimeter
+        <div class="brand-text">
+          <span>Strong</span>
+          <span>Perimeter</span>
+        </div>
       </div>
-      <p class="header-tagline">Dallas–Fort Worth Fence Specialists</p>
+      <div class="header-meta">
+        <a class="header-phone" href="tel:+12145449423">(214) 544-9423</a>
+        <p class="header-tagline">Dallas–Fort Worth Fence Specialists</p>
+      </div>
     </div>
   </header>
   <main class="main-content">
