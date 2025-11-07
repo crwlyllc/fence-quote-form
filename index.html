@@ -530,7 +530,24 @@
     const addressPlaceIdInput = document.getElementById('addressPlaceId');
     const addressLatInput = document.getElementById('addressLatitude');
     const addressLngInput = document.getElementById('addressLongitude');
+    const sourceInput = document.getElementById('source');
     let currentStep = 0;
+
+    if (sourceInput) {
+      const params = new URLSearchParams(window.location.search);
+      const urlSource = params.get('source');
+
+      if (urlSource) {
+        sourceInput.value = urlSource;
+      } else if (!sourceInput.value && document.referrer) {
+        try {
+          const referrerUrl = new URL(document.referrer);
+          sourceInput.value = referrerUrl.hostname;
+        } catch (error) {
+          console.warn('Unable to parse referrer for source field', error);
+        }
+      }
+    }
 
     const clearAddressMetadata = () => {
       if (addressPlaceIdInput) addressPlaceIdInput.value = '';
@@ -607,7 +624,8 @@
         firstName: formData.get('firstName')?.trim(),
         lastName: formData.get('lastName')?.trim(),
         email: formData.get('email')?.trim(),
-        phone: formData.get('phone')?.trim()
+        phone: formData.get('phone')?.trim(),
+        source: formData.get('source')?.trim() || null
       };
 
       try {
