@@ -1,1 +1,552 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strong Perimeter Quote</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #c8963e;
+      --accent-dark: #a47428;
+      --charcoal: #151718;
+      --slate: #1f2427;
+      --cloud: rgba(255, 255, 255, 0.85);
+      --text-muted: rgba(255, 255, 255, 0.75);
+      --input-border: rgba(255, 255, 255, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at 10% 20%, rgba(34, 43, 50, 0.95), rgba(12, 13, 14, 0.98)),
+                  url('https://images.unsplash.com/photo-1505693513577-0822e94bad77?auto=format&fit=crop&w=1950&q=80') center/cover fixed;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    .quote-wrapper {
+      max-width: 960px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 0;
+      background: rgba(21, 24, 26, 0.85);
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 40px 60px rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand-panel {
+      padding: 3.5rem 3rem;
+      background: linear-gradient(160deg, rgba(17, 20, 22, 0.95), rgba(17, 20, 22, 0.6));
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      justify-content: space-between;
+    }
+
+    .brand-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(200deg, rgba(200, 150, 62, 0.35), transparent 55%);
+      pointer-events: none;
+    }
+
+    .brand-panel h1 {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      line-height: 1.2;
+      margin: 0;
+      font-weight: 600;
+      z-index: 1;
+    }
+
+    .brand-panel p {
+      margin: 0;
+      color: var(--text-muted);
+      font-weight: 300;
+      z-index: 1;
+    }
+
+    .brand-highlight {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      color: var(--accent);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      z-index: 1;
+    }
+
+    .brand-highlight::before {
+      content: '';
+      width: 38px;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .form-panel {
+      padding: 3.5rem 3rem;
+      background: rgba(18, 20, 22, 0.75);
+      backdrop-filter: blur(12px);
+      position: relative;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .step-indicator {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .step-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      border: 1px solid var(--accent);
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .form-step {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    .form-step h2 {
+      margin: 0 0 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .form-step p {
+      margin: 0 0 1.5rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.01em;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--input-border);
+      background: rgba(10, 12, 13, 0.6);
+      color: #fff;
+      font-size: 1rem;
+      transition: border 0.3s ease, transform 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 0 0 3px rgba(200, 150, 62, 0.15);
+    }
+
+    .radio-group {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .radio-option {
+      position: relative;
+      border: 1px solid var(--input-border);
+      border-radius: 14px;
+      padding: 0.85rem 1rem 0.85rem 3.25rem;
+      background: rgba(11, 13, 14, 0.7);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      font-weight: 400;
+      transition: border 0.3s ease, background 0.3s ease, transform 0.2s ease;
+    }
+
+    .radio-option:hover,
+    .radio-option:focus-within {
+      border-color: var(--accent);
+      background: rgba(200, 150, 62, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .radio-option input {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .name-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 0.85rem 2.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #111;
+      box-shadow: 0 12px 22px rgba(200, 150, 62, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 28px rgba(200, 150, 62, 0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--input-border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .form-message {
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .form-message.success {
+      background: rgba(51, 136, 95, 0.2);
+      color: #9fe3b4;
+      border: 1px solid rgba(159, 227, 180, 0.35);
+    }
+
+    .form-message.error {
+      background: rgba(208, 87, 87, 0.2);
+      color: #f5b5b5;
+      border: 1px solid rgba(245, 181, 181, 0.35);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 1.5rem 1rem;
+      }
+
+      .brand-panel {
+        padding: 2.5rem 2rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .form-panel {
+        padding: 2.5rem 2rem;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-secondary,
+      .btn-primary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="quote-wrapper">
+    <div class="brand-panel">
+      <div>
+        <span class="brand-highlight">Strong Perimeter</span>
+        <h1>Secure Your Space with a Tailored Quote</h1>
+        <p>
+          Provide a few details below and our team will reach out with a precise estimate for your perimeter needs.
+        </p>
+      </div>
+      <p>
+        Trusted by homeowners and businesses across the valley for premium fencing, restoration, and finishing services.
+      </p>
+    </div>
+    <div class="form-panel">
+      <form id="quote-form" novalidate>
+        <div class="step-indicator" aria-hidden="true">
+          <span class="step-dot active"></span>
+          <span class="step-dot"></span>
+          <span class="step-dot"></span>
+          <span class="step-dot"></span>
+        </div>
+
+        <div class="form-step active" data-step="0">
+          <h2>Where is the project located?</h2>
+          <p>Share the full address so we can evaluate the space and tailor your quote.</p>
+          <label for="address">Project Address</label>
+          <input type="text" id="address" name="address" placeholder="1234 W Elm St, Phoenix, AZ" required />
+          <div class="actions" style="justify-content: flex-end;">
+            <button class="btn-primary" type="button" data-next>Next</button>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="1">
+          <h2>What service do you need?</h2>
+          <p>Select the option that best describes your project.</p>
+          <div class="radio-group" role="radiogroup" aria-labelledby="service-label">
+            <span id="service-label" class="sr-only">Service Type</span>
+            <label class="radio-option">
+              <input type="radio" name="service" value="Wrought Iron Restoration (Repair & Painting)" required />
+              Wrought Iron Restoration (Repair &amp; Painting)
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="service" value="Wrought Iron Installation" />
+              Wrought Iron Installation
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="service" value="Wood Fence Repair" />
+              Wood Fence Repair
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="service" value="Wood Fence Staining" />
+              Wood Fence Staining
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="service" value="Wood Fence Installation" />
+              Wood Fence Installation
+            </label>
+          </div>
+          <div class="actions">
+            <button class="btn-secondary" type="button" data-prev>Back</button>
+            <button class="btn-primary" type="button" data-next>Next</button>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="2">
+          <h2>Is this for a home or business?</h2>
+          <p>Understanding the property type helps us prepare the right crew and materials.</p>
+          <div class="radio-group" role="radiogroup" aria-labelledby="location-type-label">
+            <span id="location-type-label" class="sr-only">Location Type</span>
+            <label class="radio-option">
+              <input type="radio" name="locationType" value="Home" required />
+              Home
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="locationType" value="Business" />
+              Business
+            </label>
+          </div>
+          <div class="actions">
+            <button class="btn-secondary" type="button" data-prev>Back</button>
+            <button class="btn-primary" type="button" data-next>Next</button>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="3">
+          <h2>How can we contact you?</h2>
+          <p>Share your contact details and we’ll follow up with your custom quote.</p>
+          <div class="name-grid">
+            <div>
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" placeholder="First Name" required />
+            </div>
+            <div>
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Last Name" required />
+            </div>
+          </div>
+          <div class="name-grid">
+            <div>
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div>
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn-secondary" type="button" data-prev>Back</button>
+            <button class="btn-primary" type="submit">Submit Quote Request</button>
+          </div>
+        </div>
+
+        <div id="form-message" class="form-message" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('quote-form');
+    const steps = Array.from(document.querySelectorAll('.form-step'));
+    const dots = Array.from(document.querySelectorAll('.step-dot'));
+    const messageEl = document.getElementById('form-message');
+    let currentStep = 0;
+
+    const showStep = (index) => {
+      steps.forEach((step, i) => {
+        step.classList.toggle('active', i === index);
+      });
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+      });
+      currentStep = index;
+      messageEl.style.display = 'none';
+    };
+
+    const validateStep = (stepIndex) => {
+      const step = steps[stepIndex];
+      const inputs = Array.from(step.querySelectorAll('input'));
+      return inputs.every((input) => {
+        if (input.type === 'radio') {
+          const group = step.querySelectorAll(`input[name="${input.name}"]`);
+          return Array.from(group).some((radio) => radio.checked);
+        }
+        return input.checkValidity();
+      });
+    };
+
+    document.querySelectorAll('[data-next]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!validateStep(currentStep)) {
+          form.reportValidity();
+          return;
+        }
+        if (currentStep < steps.length - 1) {
+          showStep(currentStep + 1);
+        }
+      });
+    });
+
+    document.querySelectorAll('[data-prev]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (currentStep > 0) {
+          showStep(currentStep - 1);
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!validateStep(currentStep)) {
+        form.reportValidity();
+        return;
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        address: formData.get('address')?.trim(),
+        service: formData.get('service'),
+        locationType: formData.get('locationType'),
+        firstName: formData.get('firstName')?.trim(),
+        lastName: formData.get('lastName')?.trim(),
+        email: formData.get('email')?.trim(),
+        phone: formData.get('phone')?.trim()
+      };
+
+      try {
+        const response = await fetch('https://api.strongclicks.io/webhook/simple-quote-form', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        messageEl.textContent = 'Thank you! Your request has been submitted. We will reach out soon.';
+        messageEl.className = 'form-message success';
+        messageEl.style.display = 'block';
+        form.reset();
+        showStep(0);
+      } catch (error) {
+        console.error(error);
+        messageEl.textContent = 'Something went wrong while submitting your request. Please try again later.';
+        messageEl.className = 'form-message error';
+        messageEl.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
