@@ -88,7 +88,7 @@
       font-family: 'Open Sans', sans-serif;
       font-weight: 700;
       font-size: 1.05rem;
-      letter-spacing: 0.04em;
+      letter-spacing: -2px;
       line-height: 1.1;
       text-align: left;
     }
@@ -230,7 +230,8 @@
 
     input[type="text"],
     input[type="email"],
-    input[type="tel"] {
+    input[type="tel"],
+    textarea {
       width: 100%;
       padding: 0.85rem 1rem;
       border-radius: 12px;
@@ -241,9 +242,15 @@
       transition: border 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     }
 
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
     input[type="text"]:focus,
     input[type="email"]:focus,
-    input[type="tel"]:focus {
+    input[type="tel"]:focus,
+    textarea:focus {
       outline: none;
       border-color: var(--brand);
       transform: translateY(-1px);
@@ -290,6 +297,10 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 1rem;
+    }
+
+    .project-details-group {
+      margin-top: 1.5rem;
     }
 
     .actions {
@@ -520,6 +531,14 @@
               <input type="tel" id="phone" name="phone" placeholder="(214) 544-9423" required />
             </div>
           </div>
+          <div class="project-details-group">
+            <label for="projectDetails">Project Details (optional)</label>
+            <textarea
+              id="projectDetails"
+              name="projectDetails"
+              placeholder="Share details about the fence style, timeline, or special considerations"
+            ></textarea>
+          </div>
           <div class="actions">
             <button class="btn-secondary" type="button" data-prev>Back</button>
             <button class="btn-primary" type="submit">Submit Quote Request</button>
@@ -635,6 +654,7 @@
         lastName: formData.get('lastName')?.trim(),
         email: formData.get('email')?.trim(),
         phone: formData.get('phone')?.trim(),
+        projectDetails: formData.get('projectDetails')?.trim() || null,
         source: formData.get('source')?.trim() || null
       };
 
