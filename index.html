@@ -413,7 +413,10 @@
           <h2>Where is the project located?</h2>
           <p>Share the full address so we can evaluate your Dallas–Fort Worth property and tailor the quote.</p>
           <label for="address">Project Address</label>
-          <input type="text" id="address" name="address" placeholder="1234 Live Oak St, Dallas, TX" required />
+          <input type="text" id="address" name="address" placeholder="1234 Live Oak St, Dallas, TX" autocomplete="off" required />
+          <input type="hidden" id="addressPlaceId" name="addressPlaceId" />
+          <input type="hidden" id="addressLatitude" name="addressLatitude" />
+          <input type="hidden" id="addressLongitude" name="addressLongitude" />
           <div class="actions" style="justify-content: flex-end;">
             <button class="btn-primary" type="button" data-next>Next</button>
           </div>
@@ -510,7 +513,23 @@
     const steps = Array.from(document.querySelectorAll('.form-step'));
     const dots = Array.from(document.querySelectorAll('.step-dot'));
     const messageEl = document.getElementById('form-message');
+    const addressInput = document.getElementById('address');
+    const addressPlaceIdInput = document.getElementById('addressPlaceId');
+    const addressLatInput = document.getElementById('addressLatitude');
+    const addressLngInput = document.getElementById('addressLongitude');
     let currentStep = 0;
+
+    const clearAddressMetadata = () => {
+      if (addressPlaceIdInput) addressPlaceIdInput.value = '';
+      if (addressLatInput) addressLatInput.value = '';
+      if (addressLngInput) addressLngInput.value = '';
+    };
+
+    if (addressInput) {
+      addressInput.addEventListener('input', () => {
+        clearAddressMetadata();
+      });
+    }
 
     const showStep = (index) => {
       steps.forEach((step, i) => {
@@ -563,8 +582,13 @@
       }
 
       const formData = new FormData(form);
+      const addressLatitude = formData.get('addressLatitude');
+      const addressLongitude = formData.get('addressLongitude');
       const payload = {
         address: formData.get('address')?.trim(),
+        addressPlaceId: formData.get('addressPlaceId')?.trim() || null,
+        addressLatitude: addressLatitude ? parseFloat(addressLatitude) : null,
+        addressLongitude: addressLongitude ? parseFloat(addressLongitude) : null,
         service: formData.get('service'),
         locationType: formData.get('locationType'),
         firstName: formData.get('firstName')?.trim(),
@@ -590,6 +614,7 @@
         messageEl.className = 'form-message success';
         messageEl.style.display = 'block';
         form.reset();
+        clearAddressMetadata();
         showStep(0);
       } catch (error) {
         console.error(error);
@@ -598,6 +623,40 @@
         messageEl.style.display = 'block';
       }
     });
+
+    function initAutocomplete() {
+      if (!window.google || !google.maps || !google.maps.places || !addressInput) {
+        return;
+      }
+
+      const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+        fields: ['formatted_address', 'geometry', 'place_id'],
+        types: ['address'],
+        componentRestrictions: { country: ['us'] }
+      });
+
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place || !place.place_id || !place.geometry || !place.geometry.location) {
+          clearAddressMetadata();
+          return;
+        }
+
+        if (place.formatted_address) {
+          addressInput.value = place.formatted_address;
+        }
+
+        addressPlaceIdInput.value = place.place_id;
+        addressLatInput.value = place.geometry.location.lat();
+        addressLngInput.value = place.geometry.location.lng();
+      });
+    }
+
+    window.initMap = initAutocomplete;
   </script>
+  <script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW2GCWGKbnbA9lA2wPJSmciyMcghOZlxc&libraries=geometry,places,drawing&callback=initMap&loading=async"
+  ></script>
 </body>
 </html>
