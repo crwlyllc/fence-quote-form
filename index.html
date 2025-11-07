@@ -99,6 +99,12 @@
 
     .header-meta {
       display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-info {
+      display: flex;
       flex-direction: column;
       align-items: flex-end;
       gap: 0.25rem;
@@ -124,6 +130,14 @@
       font-size: 0.95rem;
       font-weight: 400;
       color: var(--text-muted);
+    }
+
+    .header-service-image {
+      width: 120px;
+      height: auto;
+      border-radius: 200px;
+      border: 3px solid var(--brand);
+      box-shadow: 0 6px 14px rgba(0, 75, 61, 0.12);
     }
 
     .main-content {
@@ -382,6 +396,10 @@
 
       .header-meta {
         align-items: flex-start;
+      }
+
+      .header-info {
+        align-items: flex-start;
         text-align: left;
       }
 
@@ -407,6 +425,32 @@
         width: 100%;
       }
     }
+
+    @media (max-width: 520px) {
+      .brand-text {
+        display: none;
+      }
+
+      .header-content {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .header-meta {
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .header-info {
+        align-items: flex-end;
+        text-align: right;
+      }
+
+      .header-service-image {
+        width: 96px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -423,8 +467,15 @@
         </div>
       </div>
       <div class="header-meta">
-        <a class="header-phone" href="tel:+12145449423">(214) 544-9423</a>
-        <p class="header-tagline">DFW Fence Specialists</p>
+        <div class="header-info">
+          <a class="header-phone" href="tel:+12145449423">(214) 544-9423</a>
+          <p class="header-tagline">DFW Fence Specialists</p>
+        </div>
+        <img
+          class="header-service-image"
+          src="https://cdn.prod.website-files.com/6594928d27a68dfdb6474334/686bd5c84a9c1d2d2c722b18_Untitled%20design%20(1)-min.png"
+          alt="Fence installation in progress"
+        />
       </div>
     </div>
   </header>
